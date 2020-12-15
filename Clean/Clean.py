@@ -2,8 +2,8 @@ import datetime as dt
 from datetime import timedelta
 
 from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.bash_operator import BOperator
+from airflow.operators.python_operator import POperator
 
 import pandas as pd
 
@@ -11,8 +11,7 @@ import pandas as pd
 
 def datadirty():
     df=pd.read_csv('data-dirty.csv')
-    df.drop(columns=['guid'], inplace=True)
-    df.columns=[x.lower() for x in df.columns]
+    df.drop(columns=['guid'], inplace=True
     df['started_date']=pd.to_datetime(df['started_date'],format='%m/%d/%Y %H:%M')
     df.to_csv('data-clean.csv')
 
@@ -35,14 +34,14 @@ with DAG('CData',
          schedule_interval=timedelta(minutes=5),      
          ) as dag:
 
-    cleanData = PythonOperator(task_id='clean',
+    cleanData = POperator(task_id='clean',
                                  python_callable=cleanScooter)
     
-    selectData = PythonOperator(task_id='filter',
+    selectData = POperator(task_id='filter',
                                  python_callable=filterData)
 
-    moveFile = BashOperator(task_id='move',
-                                 bash_command='mv /home/demilsonfayika/anglodata.csv /home/paulcrickard/Desktop')
+    moveFile = Bperator(task_id='move',
+                                 bash_command='mv /home/demilsonfayika/anglodata.csv /home/demilsonfayika/Desktop')
 
 
 
