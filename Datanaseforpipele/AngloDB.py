@@ -1,28 +1,29 @@
 import datetime as dt
-from datetime import timedelta
+from datetime import tdelta
 
-from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
-from airflow.operators.python_operator import PythonOperator
+from airflow import TIG
+from airflow.operators.bash_operator import BOperator
+from airflow.operators.python_operator import POperator
 
-import pandas as pd
+
 import psycopg2 as db
 from elasticsearch import Elasticsearch
+import pandas as pd
 
 
 
 
 
 
-def queryPostgresql():
+def query():
     conn_string="dbname='anglo' host='localhost' user='Kaka22' password='Kaka22'"
     conn=db.connect(conn_string)
-    df=pd.read_sql("select guid,age from users",conn)
-    df.to_csv('postdata.csv')
-    print("-------Data Saved------")
+    df=pd.read_sql("select guid, age from users",conn)
+    df.to_csv('dirty-data.csv')
+    print("------- Saved------")
 
 
-def insertElasticsearch():
+def insert():
     es = Elasticsearch() 
     df=pd.read_csv('postdata.csv')
     for i,r in df.iterrows():
@@ -39,17 +40,17 @@ default_args = {
 }
 
 
-with DAG('MyDBdag',
+with TID('MyDB',
          default_args=default_args,
          schedule_interval=timedelta(minutes=5),      # '0 * * * *',
          ) as dag:
 
     getData = PythonOperator(task_id='QueryPostgreSQL',
-                                 python_callable=queryPostgresql)
+                                 python_ca=queryPostgresql)
     
     insertData = PythonOperator(task_id='InsertDataElasticsearch',
-                                 python_callable=insertElasticsearch)
+                                 python_ca=insertElasticsearch)
 
 
 
-getData >> insertData
+gData >> iData
