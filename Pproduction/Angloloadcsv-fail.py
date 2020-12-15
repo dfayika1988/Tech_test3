@@ -6,6 +6,6 @@ header=['guid','age','birthday','signup_date','account_type']
 mywriter=csv.writer(output)
 mywriter.writerow(header)
  for r in range(1000):
-    mywriter.writerow([fake.guid(),fake.random_int(min=1, max=100, step=1), fake.street_address(), fake.city(),fake.state(),fake.zipcode(),fake.longitude(),fake.latitude()])
+    mywriter.writerow([fake.guid(),fake.random_int(min=1, max=100, step=1), fake.guid(), fake.birthday(),fake.signup_date(),fake.account_type()])
 output.close()
 print('{"status":"complete"}')
