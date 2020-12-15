@@ -25,7 +25,7 @@ def query():
 
 def insert():
     es = Elasticsearch() 
-    df=pd.read_csv('postdata.csv')
+    df=pd.read_csv('dirty-data.csv')
     for i,r in df.iterrows():
         doc=r.to_json()
         res=es.index(index="postgresql",doc_type="doc",body=doc)
