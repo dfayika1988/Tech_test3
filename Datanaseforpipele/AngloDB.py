@@ -32,23 +32,23 @@ def insert():
         print(res)	
 
 
-default_args = {
+default_as = {
     'owner': 'DemilsonFayika',
-    'start_date': dt.datetime(2020, 15, 12),
+    'date': dt.datetime(2020, 15, 12),
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=5),
 }
 
 
 with TID('MyDB',
-         default_args=default_args,
-         schedule_interval=timedelta(minutes=5),      # '0 * * * *',
-         ) as dag:
+         default_as=default_args,
+         schedule_interval=tdelta(minutes=5),      # '0 * * * *',
+         ) as tid:
 
-    getData = PythonOperator(task_id='QueryPostgreSQL',
+    gData = POperator(task_id='QueryPostgreSQL',
                                  python_ca=queryPostgresql)
     
-    insertData = PythonOperator(task_id='InsertDataElasticsearch',
+    iData = POperator(task_id='InsertDataElasticsearch',
                                  python_ca=insertElasticsearch)
 
 
