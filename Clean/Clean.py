@@ -1,7 +1,7 @@
 import datetime as dt
 from datetime import tdelta
 
-from airflow import DAG
+from airflow import TID
 from airflow.operators.bash_operator import BOperator
 from airflow.operators.python_operator import POperator
 
@@ -35,10 +35,10 @@ default_args = {
 }
 
 
-with DAG('CData',
+with TID ('CData',
          default_args=default_args,
          schedule_interval=timedelta(minutes=5),      
-         ) as dag:
+         ) as TID:
 
     clean = POperator(task_id='clean',
                                  python_ca=clean-data)
