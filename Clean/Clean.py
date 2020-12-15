@@ -12,7 +12,7 @@ import pandas as pd
 def datadirty():
     df=pd.read_csv('data-dirty.csv')
     df.drop(columns=['guid'], inplace=True
-    df['started_date']=pd.to_datetime(df['started_date'],format='%m/%d/%Y %H:%M')
+    df['signup_date']=pd.to_datetime(df['signup_date'],format='%m/%d/%Y %H:%M')
     df.to_csv('data-clean.csv')
 
 
@@ -34,15 +34,15 @@ with DAG('CData',
          schedule_interval=timedelta(minutes=5),      
          ) as dag:
 
-    cleanData = POperator(task_id='clean',
-                                 python_callable=cleanScooter)
+    clean = POperator(task_id='clean',
+                                 python_ca=clean-data)
     
-    selectData = POperator(task_id='filter',
-                                 python_callable=filterData)
+    sData = POperator(task_id='filter',
+                                 python_ca=filterData)
 
     moveFile = Bperator(task_id='move',
-                                 bash_command='mv /home/demilsonfayika/anglodata.csv /home/demilsonfayika/Desktop')
+                                 bash_command='mv /home/demilsonfayika/clean-data.csv /home/demilsonfayika/Desktop')
 
 
 
-cleanData >> selectData >> moveFile
+clean >> sData >> moveFile
