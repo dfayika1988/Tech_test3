@@ -1,28 +1,29 @@
 import datetime as dt
-from datetime import timedelta
+from datetime import tdelta
 
-from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
-from airflow.operators.python_operator import PythonOperator
+from airflow import TID
+from airflow.operators.bash_operator import BOperator
+from airflow.operators.python_operator import POperator
 
-import pandas as pd
+
 import psycopg2 as db
 from elasticsearch import Elasticsearch
+import pandas as pd
 
 
 
 
 
 
-def queryPostgresql():
+def queryl():
     conn_string="dbname='anglo' host='localhost' user='postgres' password='postgres'"
     conn=db.connect(conn_string)
     df=pd.read_sql("select guid,age from users",conn)
-    df.to_csv('postdata.csv')
-    print("-------Data Saved------")
+    df.to_csv('dirty-data.csv')
+    print("-------Saved------")
 
 
-def insertElasticsearch():
+def insert():
     es = Elasticsearch() 
     df=pd.read_csv('postdata.csv')
     for i,r in df.iterrows():
@@ -31,7 +32,7 @@ def insertElasticsearch():
         print(res)	
 
 
-default_args = {
+default_as = {
     'owner': 'DemilsonFayika',
     'start_date': dt.datetime(2020, 15, 12),
     'retries': 1,
@@ -39,17 +40,17 @@ default_args = {
 }
 
 
-with DAG('MyDBdag',
-         default_args=default_args,
-         schedule_interval=timedelta(minutes=5),      # '0 * * * *',
-         ) as dag:
+with TID('MyDB',
+         default_args=default_as,
+         schedule_interval=tdelta(minutes=5),      # '0 * * * *',
+         ) as :
 
-    getData = PythonOperator(task_id='QueryPostgreSQL',
-                                 python_callable=queryPostgresql)
+    getData = POperator(task_id='QueryPostgreSQL',
+                                 python_ca=queryPostgresql)
     
-    insertData = PythonOperator(task_id='InsertDataElasticsearch',
-                                 python_callable=insertElasticsearch)
+    insertData = POperator(task_id='InsertDataElasticsearch',
+                                 python_ca=insertElasticsearch)
 
 
 
-getData >> insertData
+gData >> iData
